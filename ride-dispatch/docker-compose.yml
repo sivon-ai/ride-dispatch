@@ -1,0 +1,35 @@
+x-app: &app
+  build: .
+  environment:
+    REDIS_URL: redis://redis:6379
+  depends_on:
+    redis:
+      condition: service_healthy
+
+services:
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      retries: 15
+  api:
+    <<: *app
+    command: node src/api.js
+    ports: ["3000:3000"]
+  worker:
+    <<: *app
+    command: node src/worker.js
+  billing:
+    <<: *app
+    command: node src/billing.js
+  ops:
+    <<: *app
+    command: node src/ops.js
+  loadtest:
+    <<: *app
+    profiles: ["test"]
+    command: node scripts/loadtest.js
+    environment:
+      REDIS_URL: redis://redis:6379
+      API_URL: http://api:3000

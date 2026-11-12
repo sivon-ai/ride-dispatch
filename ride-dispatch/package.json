@@ -1,0 +1,19 @@
+{
+  "name": "ride-dispatch",
+  "version": "1.0.0",
+  "description": "Simplified ride booking + driver assignment (queue + event stream)",
+  "main": "src/api.js",
+  "scripts": {
+    "api": "node src/api.js",
+    "worker": "node src/worker.js",
+    "billing": "node src/billing.js",
+    "ops": "node src/ops.js",
+    "loadtest": "node scripts/loadtest.js"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "bullmq": "^5.12.0",
+    "express": "^4.19.2",
+    "ioredis": "^5.4.1"
+  }
+}
